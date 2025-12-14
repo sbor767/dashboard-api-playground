@@ -33,6 +33,5 @@ export abstract class BaseController {
 			const handler = route.func.bind(this);
 			this.router[route.method](route.path, handler);
 		}
-		this.router.get('path', )
 	}
 }
