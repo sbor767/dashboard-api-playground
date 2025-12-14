@@ -30,8 +30,8 @@ export abstract class BaseController {
 	protected bindRoutes(routes: ControllerRoute[]): void {
 		for (const route of routes) {
 			this.logger.log(`Binding route ${route.method.toUpperCase()} ${route.path}`);
-			const hsndler = route.func.bind(this);
-			this.router[route.method](route.path, hsndler);
+			const handler = route.func.bind(this);
+			this.router[route.method](route.path, handler);
 		}
 		this.router.get('path', )
 	}
