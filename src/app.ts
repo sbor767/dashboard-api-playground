@@ -1,6 +1,9 @@
 import express from 'express';
 import type { Express } from 'express';
 import type { Server } from 'http';
+import { inject } from 'inversify';
+import 'reflect-metadata';
+import { TYPES } from './types.js';
 import type { UserController } from './users/users.controller.js';
 import type { ExceptionFilter } from './errors/exception.filter.js';
 import type { LoggerInteface } from './logger/logger.interface.js';
@@ -9,14 +12,11 @@ export class App {
 	app: Express;
 	server: Server;
 	port: number;
-	logger: LoggerInteface;
-	userController: UserController;
-	exceptionFilter: ExceptionFilter;
 
 	constructor (
-		logger: LoggerInteface, 
-		userController: UserController,
-		exceptionFilter: ExceptionFilter
+		@inject(TYPES.LoggerInterface) private logger: LoggerInteface,
+		@inject(TYPES.UserController) private userController: UserController,
+		@inject(TYPES.ExceptionFilter) private exceptionFilter: ExceptionFilter,
 	) {
 		this.app = express();
 		this.port = 8000;

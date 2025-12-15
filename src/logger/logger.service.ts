@@ -1,6 +1,9 @@
 import { Logger } from 'tslog';
+import { injectable } from 'inversify';
+import 'reflect-metadata';
 import type { LoggerInteface } from './logger.interface';
 
+@injectable()
 export class LoggerService implements LoggerInteface {
 	private logger: Logger;
 
