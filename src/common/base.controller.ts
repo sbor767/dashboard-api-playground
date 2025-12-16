@@ -1,16 +1,16 @@
-import { Response, Router } from "express";
-import { injectable } from "inversify";
+import { Response, Router } from 'express';
+import { injectable } from 'inversify';
 import 'reflect-metadata';
-import { LoggerInteface } from "../logger/logger.interface";
-import { LoggerService } from "../logger/logger.service";
-import { ControllerRoute } from "./route.interface";
+import { LoggerInteface } from '../logger/logger.interface';
+import { LoggerService } from '../logger/logger.service';
+import { ControllerRoute } from './route.interface';
 export { Router } from 'express';
 
 @injectable()
 export abstract class BaseController {
 	private readonly _router: Router;
-	
-	constructor (private logger: LoggerInteface) {
+
+	constructor(private logger: LoggerInteface) {
 		this._router = Router();
 	}
 
@@ -18,7 +18,7 @@ export abstract class BaseController {
 		return this._router;
 	}
 
-	public send<T> (res: Response, code: number, data: T): Response {
+	public send<T>(res: Response, code: number, data: T): Response {
 		res.type('application/json');
 		return res.status(code).json(data);
 	}

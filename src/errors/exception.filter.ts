@@ -1,10 +1,10 @@
-import type { NextFunction, Request, Response } from "express";
-import { inject, injectable } from "inversify";
+import type { NextFunction, Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
-import { TYPES } from "../types";
-import { LoggerInteface } from "../logger/logger.interface";
-import type { ExceptionFilterInterface } from "./exception.filter.interface";
-import { HTTPError } from "./http-error.class";
+import { TYPES } from '../types';
+import { LoggerInteface } from '../logger/logger.interface';
+import type { ExceptionFilterInterface } from './exception.filter.interface';
+import { HTTPError } from './http-error.class';
 
 @injectable()
 export class ExceptionFilter implements ExceptionFilterInterface {
@@ -12,7 +12,9 @@ export class ExceptionFilter implements ExceptionFilterInterface {
 
 	catch(err: Error | HTTPError, req: Request, res: Response, next: NextFunction): void {
 		if (err instanceof HTTPError) {
-			this.logger.error(`[${err.context}] HTTP Error occurred: '${req.path}' ${err.statusCode} - ${err.message}`);
+			this.logger.error(
+				`[${err.context}] HTTP Error occurred: '${req.path}' ${err.statusCode} - ${err.message}`,
+			);
 			res.status(err.statusCode).send({ error: err.message });
 			return;
 		} else {

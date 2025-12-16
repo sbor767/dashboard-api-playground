@@ -13,7 +13,7 @@ export class App {
 	server: Server;
 	port: number;
 
-	constructor (
+	constructor(
 		@inject(TYPES.LoggerInterface) private logger: LoggerInteface,
 		@inject(TYPES.UserController) private userController: UserController,
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: ExceptionFilter,
@@ -25,8 +25,8 @@ export class App {
 		this.exceptionFilter = exceptionFilter;
 	}
 
-	useRoutes()	{
-		this.app.use('/users', this.userController.router);	
+	useRoutes() {
+		this.app.use('/users', this.userController.router);
 	}
 
 	useExceptionFilters() {
@@ -38,5 +38,5 @@ export class App {
 		this.useExceptionFilters();
 		this.server = this.app.listen(this.port);
 		this.logger.log(`Server started on http://localhost:${this.port}`);
-	}			
+	}
 }

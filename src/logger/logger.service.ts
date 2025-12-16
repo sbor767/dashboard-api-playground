@@ -19,7 +19,7 @@ export class LoggerService implements LoggerInteface {
 	log(...args: unknown[]): void {
 		this.logger.info(...args);
 	}
-	
+
 	error(...args: unknown[]): void {
 		this.logger.error(...args);
 	}
