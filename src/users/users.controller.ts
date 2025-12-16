@@ -5,9 +5,10 @@ import { TYPES } from "../types";
 import { BaseController } from "../common/base.controller";
 import { LoggerInteface } from "../logger/logger.interface";
 import { HTTPError } from "../errors/http-error.class";
+import { UserControllerInterface } from "./users.controller.interface";
 
 @injectable()
-export class UserController extends BaseController {
+export class UserController extends BaseController implements UserControllerInterface {
 	constructor (@inject(TYPES.LoggerInterface) private loggerService: LoggerInteface) {
 		super(loggerService);
 
@@ -17,12 +18,12 @@ export class UserController extends BaseController {
 		]);
 	}
 
-	private login (_: Request, res: Response, next: NextFunction): void {
+	login (_: Request, res: Response, next: NextFunction): void {
 		// return this.ok(res, '/login');
 		next(new HTTPError(401, 'Not authorized', 'UserController/login'));
 	}
 
-	private register (_: Request, res: Response, next: NextFunction): Response {
+	register (_: Request, res: Response, next: NextFunction): Response {
 		return this.ok(res, '/register');
 	}
 }

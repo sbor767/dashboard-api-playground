@@ -6,11 +6,12 @@ import type { ExceptionFilterInterface } from "./errors/exception.filter.interfa
 import { LoggerService } from "./logger/logger.service";
 import { ExceptionFilter } from "./errors/exception.filter";
 import { UserController } from "./users/users.controller";
+import { UserControllerInterface } from "./users/users.controller.interface";
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<LoggerInteface>(TYPES.LoggerInterface).to(LoggerService);
 	bind<ExceptionFilterInterface>(TYPES.ExceptionFilter).to(ExceptionFilter);
-	bind<UserController>(TYPES.UserController).to(UserController);
+	bind<UserControllerInterface>(TYPES.UserController).to(UserController);
 	bind<App>(TYPES.Application).to(App);
 });
 
