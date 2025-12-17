@@ -3,7 +3,7 @@ import type { Express } from 'express';
 import type { Server } from 'http';
 import { inject } from 'inversify';
 import 'reflect-metadata';
-import { TYPES } from './types.js';
+import { TYPES } from './types';
 import type { UserController } from './users/users.controller.js';
 import type { ExceptionFilter } from './errors/exception.filter.js';
 import type { LoggerInteface } from './logger/logger.interface.js';
