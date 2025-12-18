@@ -5,7 +5,7 @@ import { TYPES } from '../types';
 import { BaseController } from '../common/base.controller';
 import { LoggerInteface } from '../logger/logger.interface';
 import { HTTPError } from '../errors/http-error.class';
-import { UserControllerInterface } from './users.controller.interface';
+import { UserControllerInterface } from './user.controller.interface';
 import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { User } from './user.entity';

@@ -5,8 +5,8 @@ import type { LoggerInteface } from './logger/logger.interface';
 import type { ExceptionFilterInterface } from './errors/exception.filter.interface';
 import { LoggerService } from './logger/logger.service';
 import { ExceptionFilter } from './errors/exception.filter';
-import { UserController } from './users/users.controller';
-import { UserControllerInterface } from './users/users.controller.interface';
+import { UserController } from './user/user.controller';
+import { UserControllerInterface } from './user/user.controller.interface';
 
 export interface BootstrapReturn {
 	app: App;

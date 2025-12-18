@@ -4,7 +4,7 @@ import type { Server } from 'http';
 import { inject } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from './types';
-import type { UserController } from './users/users.controller.js';
+import type { UserController } from './user/user.controller.js';
 import type { ExceptionFilter } from './errors/exception.filter.js';
 import type { LoggerInteface } from './logger/logger.interface.js';
 import { json } from 'body-parser';
