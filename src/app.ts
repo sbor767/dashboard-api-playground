@@ -4,9 +4,9 @@ import type { Server } from 'http';
 import { inject } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from './types';
-import type { UserController } from './user/user.controller.js';
-import type { ExceptionFilter } from './errors/exception.filter.js';
-import type { LoggerInteface } from './logger/logger.interface.js';
+import type { DefaultUserController } from './user/default-user.controller.js';
+import type { DefaultExceptionFilter } from './error/default-exception.filter.js';
+import type { LoggerService } from './logger/logger.service.js';
 import { json } from 'body-parser';
 
 export class App {
@@ -15,9 +15,9 @@ export class App {
 	port: number;
 
 	constructor(
-		@inject(TYPES.LoggerInterface) private logger: LoggerInteface,
-		@inject(TYPES.UserController) private userController: UserController,
-		@inject(TYPES.ExceptionFilter) private exceptionFilter: ExceptionFilter,
+		@inject(TYPES.LoggerInterface) private logger: LoggerService,
+		@inject(TYPES.UserController) private userController: DefaultUserController,
+		@inject(TYPES.ExceptionFilter) private exceptionFilter: DefaultExceptionFilter,
 	) {
 		this.app = express();
 		this.port = 8000;
