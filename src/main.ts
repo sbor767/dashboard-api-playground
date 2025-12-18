@@ -1,12 +1,12 @@
 import { Container, ContainerModule, interfaces } from 'inversify';
 import { TYPES } from './types';
 import { App } from './app';
-import type { LoggerInteface } from './logger/logger.interface';
-import type { ExceptionFilterInterface } from './errors/exception.filter.interface';
-import { LoggerService } from './logger/logger.service';
-import { ExceptionFilter } from './errors/exception.filter';
+import type { LoggerService } from './logger/logger.service';
+import type { ExceptionFilter } from './error/exception.filter';
+import { DefaultLoggerService } from './logger/default-logger.service';
+import { DefaultExceptionFilter } from './error/default-exception.filter';
+import { DefaultUserController } from './user/default-user.controller';
 import { UserController } from './user/user.controller';
-import { UserControllerInterface } from './user/user.controller.interface';
 
 export interface BootstrapReturn {
 	app: App;
@@ -14,9 +14,9 @@ export interface BootstrapReturn {
 }
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
-	bind<LoggerInteface>(TYPES.LoggerInterface).to(LoggerService);
-	bind<ExceptionFilterInterface>(TYPES.ExceptionFilter).to(ExceptionFilter);
-	bind<UserControllerInterface>(TYPES.UserController).to(UserController);
+	bind<LoggerService>(TYPES.LoggerInterface).to(DefaultLoggerService);
+	bind<ExceptionFilter>(TYPES.ExceptionFilter).to(DefaultExceptionFilter);
+	bind<UserController>(TYPES.UserController).to(DefaultUserController);
 	bind<App>(TYPES.Application).to(App);
 });
 
