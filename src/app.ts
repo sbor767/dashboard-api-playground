@@ -21,9 +21,6 @@ export class App {
 	) {
 		this.app = express();
 		this.port = 8000;
-		this.logger = logger;
-		this.userController = userController;
-		this.exceptionFilter = exceptionFilter;
 	}
 
 	useMiddlewares(): void {
