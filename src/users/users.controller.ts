@@ -6,6 +6,9 @@ import { BaseController } from '../common/base.controller';
 import { LoggerInteface } from '../logger/logger.interface';
 import { HTTPError } from '../errors/http-error.class';
 import { UserControllerInterface } from './users.controller.interface';
+import { UserLoginDto } from './dto/user-login.dto';
+import { UserRegisterDto } from './dto/user-register.dto';
+import { User } from './user.entity';
 
 @injectable()
 export class UserController extends BaseController implements UserControllerInterface {
@@ -18,12 +21,15 @@ export class UserController extends BaseController implements UserControllerInte
 		]);
 	}
 
-	login(_: Request, res: Response, next: NextFunction): void {
-		// return this.ok(res, '/login');
+	login(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
+		console.log(req.body);
 		next(new HTTPError(401, 'Not authorized', 'UserController/login'));
 	}
 
-	register(_: Request, res: Response, next: NextFunction): Response {
-		return this.ok(res, '/register');
+	register({ body }: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction): void {
+		const newUser = new User(body.email, body.name);
+		newUser.setPassword(body.password).then(() => {
+			this.ok(res, newUser);
+		});
 	}
 }
