@@ -2,13 +2,13 @@ import type { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '../types';
-import { LoggerInteface } from '../logger/logger.interface';
-import type { ExceptionFilterInterface } from './exception.filter.interface';
+import { LoggerService } from '../logger/logger.service';
+import type { ExceptionFilter } from './exception.filter';
 import { HTTPError } from './http-error.class';
 
 @injectable()
-export class ExceptionFilter implements ExceptionFilterInterface {
-	constructor(@inject(TYPES.LoggerInterface) private logger: LoggerInteface) {}
+export class DefaultExceptionFilter implements ExceptionFilter {
+	constructor(@inject(TYPES.LoggerService) private logger: LoggerService) {}
 
 	catch(err: Error | HTTPError, req: Request, res: Response, next: NextFunction): void {
 		if (err instanceof HTTPError) {
