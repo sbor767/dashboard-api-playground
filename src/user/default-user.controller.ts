@@ -3,13 +3,12 @@ import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '../types';
 import { DefaultController } from '../common/default.controller';
-import { LoggerService } from '../logger/logger.service';
+import type { LoggerService } from '../logger/logger.service';
 import { HTTPError } from '../error/http-error.class';
 import { UserController } from './user.controller';
-import { UserLoginDto } from './dto/user-login.dto';
+import type { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
-import { User } from './user.entity';
-import { UserService } from './user.service';
+import type { UserService } from './user.service';
 import { ValidateMiddleware } from '../common/validate.middleware';
 
 @injectable()

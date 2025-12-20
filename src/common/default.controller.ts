@@ -3,10 +3,10 @@ import { injectable } from 'inversify';
 import 'reflect-metadata';
 import { LoggerService } from '../logger/logger.service';
 import { ControllerRoute } from './controller-route';
-export { Router } from 'express';
+import { Controller } from './controller';
 
 @injectable()
-export abstract class DefaultController {
+export abstract class DefaultController implements Controller {
 	private readonly _router: Router;
 
 	constructor(private logger: LoggerService) {
