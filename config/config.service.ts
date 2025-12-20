@@ -1,3 +1,3 @@
 export interface ConfigService {
-	get: <T extends string | number>(key: string) => T;
+	get: (key: string) => string;
 }
