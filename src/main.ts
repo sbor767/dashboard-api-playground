@@ -9,8 +9,8 @@ import { DefaultUserController } from './user/default-user.controller';
 import { UserController } from './user/user.controller';
 import { DefaultUserService } from './user/default-user.service';
 import { UserService } from './user/user.service';
-import { ConfigService } from '../config/config.service';
-import { DefaultConfigService } from '../config/default-config.service';
+import { ConfigService } from './config/config.service';
+import { DefaultConfigService } from './config/default-config.service';
 import { PrismaService } from './database/prisma.service';
 import { DefaultPrismaService } from './database/default-prisma.service';
 
