@@ -8,7 +8,12 @@ export class ValidateMiddleware implements Middleware {
 
 	execute({ body }: Request, res: Response, next: NextFunction): void {
 		const instance = plainToClass(this.classToValidate, body);
-		validate(instance).then((errors) => {
+
+		const options = {
+			whitelist: true,
+			forbidNonWhitelisted: true,
+		};
+		validate(instance, options).then((errors) => {
 			if (errors.length > 0) {
 				res.status(422).send(errors);
 			} else {
