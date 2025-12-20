@@ -18,12 +18,12 @@ export interface BootstrapReturn {
 }
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
-	bind<LoggerService>(TYPES.LoggerService).to(DefaultLoggerService);
-	bind<ExceptionFilter>(TYPES.ExceptionFilter).to(DefaultExceptionFilter);
-	bind<UserController>(TYPES.UserController).to(DefaultUserController);
-	bind<UserService>(TYPES.UserService).to(DefaultUserService);
-	bind<ConfigService>(TYPES.ConfigService).to(DefaultConfigService);
-	bind<App>(TYPES.Application).to(App);
+	bind<LoggerService>(TYPES.LoggerService).to(DefaultLoggerService).inSingletonScope();
+	bind<ExceptionFilter>(TYPES.ExceptionFilter).to(DefaultExceptionFilter).inSingletonScope();
+	bind<UserController>(TYPES.UserController).to(DefaultUserController).inSingletonScope();
+	bind<UserService>(TYPES.UserService).to(DefaultUserService).inSingletonScope();
+	bind<ConfigService>(TYPES.ConfigService).to(DefaultConfigService).inSingletonScope();
+	bind<App>(TYPES.Application).to(App).inSingletonScope();
 });
 
 function bootstrap(): BootstrapReturn {
