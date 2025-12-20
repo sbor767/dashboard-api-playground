@@ -9,15 +9,19 @@ import { UserController } from './user.controller';
 import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { User } from './user.entity';
+import { UserService } from './user.service';
 
 @injectable()
 export class DefaultUserController extends DefaultController implements UserController {
-	constructor(@inject(TYPES.LoggerInterface) private loggerService: LoggerService) {
+	constructor(
+		@inject(TYPES.LoggerService) private loggerService: LoggerService,
+		@inject(TYPES.UserService) private userService: UserService,
+	) {
 		super(loggerService);
 
 		this.bindRoutes([
+			{ path: '/register', func: this.register, method: 'post', middlewares: [] },
 			{ path: '/login', func: this.login, method: 'post' },
-			{ path: '/register', func: this.register, method: 'post' },
 		]);
 	}
 
@@ -26,10 +30,15 @@ export class DefaultUserController extends DefaultController implements UserCont
 		next(new HTTPError(401, 'Not authorized', 'UserController/login'));
 	}
 
-	register({ body }: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction): void {
-		const newUser = new User(body.email, body.name);
-		newUser.setPassword(body.password).then(() => {
-			this.ok(res, newUser);
-		});
+	async register(
+		{ body }: Request<{}, {}, UserRegisterDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		const result = await this.userService.createUser(body);
+		if (!result) {
+			return next(new HTTPError(422, 'User already exists', 'UserController/register'));
+		}
+		this.ok(res, { email: result.email });
 	}
 }

@@ -7,6 +7,8 @@ import { DefaultLoggerService } from './logger/default-logger.service';
 import { DefaultExceptionFilter } from './error/default-exception.filter';
 import { DefaultUserController } from './user/default-user.controller';
 import { UserController } from './user/user.controller';
+import { DefaultUserService } from './user/default-user.service';
+import { UserService } from './user/user.service';
 
 export interface BootstrapReturn {
 	app: App;
@@ -14,9 +16,10 @@ export interface BootstrapReturn {
 }
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
-	bind<LoggerService>(TYPES.LoggerInterface).to(DefaultLoggerService);
+	bind<LoggerService>(TYPES.LoggerService).to(DefaultLoggerService);
 	bind<ExceptionFilter>(TYPES.ExceptionFilter).to(DefaultExceptionFilter);
 	bind<UserController>(TYPES.UserController).to(DefaultUserController);
+	bind<UserService>(TYPES.UserService).to(DefaultUserService);
 	bind<App>(TYPES.Application).to(App);
 });
 
