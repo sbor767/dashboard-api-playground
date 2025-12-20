@@ -8,6 +8,7 @@ import { TYPES } from './types';
 import type { LoggerService } from './logger/logger.service.js';
 import type { ExceptionFilter } from './error/exception.filter';
 import type { UserController } from './user/user.controller';
+import type { PrismaService } from './database/prisma.service';
 
 export class App {
 	app: Express;
@@ -18,6 +19,7 @@ export class App {
 		@inject(TYPES.LoggerService) private logger: LoggerService,
 		@inject(TYPES.UserController) private userController: UserController,
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: ExceptionFilter,
+		@inject(TYPES.PrismaService) private readonly prismaService: PrismaService,
 	) {
 		this.app = express();
 		this.port = 8000;
@@ -39,6 +41,7 @@ export class App {
 		this.useMiddlewares();
 		this.useRoutes();
 		this.useExceptionFilters();
+		await this.prismaService.connect();
 		this.server = this.app.listen(this.port);
 		this.logger.log(`Server started on http://localhost:${this.port}`);
 	}
