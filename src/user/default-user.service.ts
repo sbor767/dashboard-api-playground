@@ -33,6 +33,8 @@ export class DefaultUserService implements UserService {
 			return false;
 		}
 
-		return User.comparePassword(password, existedUser.password);
+		const newUser = new User(existedUser.email, existedUser.name, existedUser.password);
+
+		return newUser.comparePassword(password);
 	}
 }
