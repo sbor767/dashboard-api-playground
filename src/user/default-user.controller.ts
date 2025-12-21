@@ -41,11 +41,10 @@ export class DefaultUserController extends DefaultController implements UserCont
 		next: NextFunction,
 	): Promise<void> {
 		const validated = await this.userService.validateUser(body);
-		if (validated) {
-			this.ok<string>(res, '');
-			return;
+		if (!validated) {
+			return next(new HTTPError(401, 'Not authorized', 'UserController/login'));
 		}
-		next(new HTTPError(401, 'Not authorized', 'UserController/login'));
+		this.ok<string>(res, '');
 	}
 
 	async register(
