@@ -1,5 +1,4 @@
 import { inject, injectable } from 'inversify';
-import { compare, hash } from 'bcryptjs';
 import type { UserModel } from '@prisma/client';
 import type { ConfigService } from '../config/config.service';
 import type { UserRepository } from './user.repository';
@@ -34,6 +33,6 @@ export class DefaultUserService implements UserService {
 			return false;
 		}
 
-		return compare(password, existedUser.password);
+		return User.comparePassword(password, existedUser.password);
 	}
 }
