@@ -1,9 +1,10 @@
 export const TYPES = {
-	Application: Symbol.for('Application'),
+	ConfigService: Symbol.for('ConfigService'),
 	LoggerService: Symbol.for('LoggerService'),
+	ExceptionFilter: Symbol.for('ExceptionFilter'),
 	UserController: Symbol.for('UserController'),
 	UserService: Symbol.for('UserService'),
-	ExceptionFilter: Symbol.for('ExceptionFilter'),
-	ConfigService: Symbol.for('ConfigService'),
+	UserRepository: Symbol.for('UserRepository'),
 	PrismaService: Symbol.for('PrismaService'),
+	Application: Symbol.for('Application'),
 };

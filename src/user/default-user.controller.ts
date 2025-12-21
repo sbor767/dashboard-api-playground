@@ -2,13 +2,13 @@ import type { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '../types';
-import { DefaultController } from '../common/default.controller';
 import type { LoggerService } from '../logger/logger.service';
-import { HTTPError } from '../error/http-error.class';
-import { UserController } from './user.controller';
+import type { UserController } from './user.controller';
+import type { UserService } from './user.service';
 import type { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
-import type { UserService } from './user.service';
+import { DefaultController } from '../common/default.controller';
+import { HTTPError } from '../error/http-error.class';
 import { ValidateMiddleware } from '../common/validate.middleware';
 
 @injectable()
@@ -44,6 +44,6 @@ export class DefaultUserController extends DefaultController implements UserCont
 		if (!result) {
 			return next(new HTTPError(422, 'User already exists', 'UserController/register'));
 		}
-		this.ok(res, { email: result.email });
+		this.ok(res, { email: result.email, id: result.id });
 	}
 }
