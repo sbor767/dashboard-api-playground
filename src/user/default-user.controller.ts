@@ -5,7 +5,7 @@ import { TYPES } from '../types';
 import type { LoggerService } from '../logger/logger.service';
 import type { UserController } from './user.controller';
 import type { UserService } from './user.service';
-import type { UserLoginDto } from './dto/user-login.dto';
+import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { DefaultController } from '../common/default.controller';
 import { HTTPError } from '../error/http-error.class';
@@ -26,12 +26,25 @@ export class DefaultUserController extends DefaultController implements UserCont
 				method: 'post',
 				middlewares: [new ValidateMiddleware(UserRegisterDto)],
 			},
-			{ path: '/login', func: this.login, method: 'post' },
+			{
+				path: '/login',
+				func: this.login,
+				method: 'post',
+				middlewares: [new ValidateMiddleware(UserLoginDto)],
+			},
 		]);
 	}
 
-	login(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
-		console.log(req.body);
+	async login(
+		{ body }: Request<{}, {}, UserLoginDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		const validated = await this.userService.validateUser(body);
+		if (validated) {
+			this.ok<string>(res, '');
+			return;
+		}
 		next(new HTTPError(401, 'Not authorized', 'UserController/login'));
 	}
 

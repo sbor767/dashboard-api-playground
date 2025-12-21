@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { compare, hash } from 'bcryptjs';
 import type { UserModel } from '@prisma/client';
 import type { ConfigService } from '../config/config.service';
 import type { UserRepository } from './user.repository';
@@ -17,8 +18,8 @@ export class DefaultUserService implements UserService {
 
 	async createUser({ email, name, password }: UserRegisterDto): Promise<UserModel | null> {
 		const newUser = new User(email, name);
-		const salt = this.config.get('SALT');
-		await newUser.setPassword(password, Number(salt));
+		const bcryptRounds = this.config.get('BCRYPT_ROUNDS');
+		await newUser.setPassword(password, Number(bcryptRounds));
 		const existedUser = await this.userRepository.find(email);
 		if (existedUser) {
 			return null;
@@ -27,7 +28,12 @@ export class DefaultUserService implements UserService {
 		return this.userRepository.create(newUser);
 	}
 
-	async validateUser(dto: UserLoginDto): Promise<boolean> {
-		return true;
+	async validateUser({ email, password }: UserLoginDto): Promise<boolean> {
+		const existedUser = await this.userRepository.find(email);
+		if (!existedUser) {
+			return false;
+		}
+
+		return compare(password, existedUser.password);
 	}
 }
