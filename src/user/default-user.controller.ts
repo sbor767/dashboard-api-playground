@@ -4,14 +4,15 @@ import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '../types';
 import type { LoggerService } from '../logger/logger.service';
+import type { ConfigService } from '../config/config.service';
 import type { UserController } from './user.controller';
 import type { UserService } from './user.service';
 import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
-import { DefaultController } from '../common/default.controller';
 import { HTTPError } from '../error/http-error.class';
+import { DefaultController } from '../common/default.controller';
 import { ValidateMiddleware } from '../common/validate.middleware';
-import type { ConfigService } from '../config/config.service';
+import { GuardMiddleware } from '../common/guard.middleware';
 
 @injectable()
 export class DefaultUserController extends DefaultController implements UserController {
@@ -39,7 +40,7 @@ export class DefaultUserController extends DefaultController implements UserCont
 				path: '/info',
 				func: this.info,
 				method: 'get',
-				middlewares: [],
+				middlewares: [new GuardMiddleware()],
 			},
 		]);
 	}
