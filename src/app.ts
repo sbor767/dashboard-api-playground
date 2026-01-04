@@ -6,9 +6,11 @@ import 'reflect-metadata';
 import { json } from 'body-parser';
 import { TYPES } from './types';
 import type { LoggerService } from './logger/logger.service.js';
+import type { ConfigService } from './config/config.service';
 import type { ExceptionFilter } from './error/exception.filter';
 import type { UserController } from './user/user.controller';
 import type { PrismaService } from './database/prisma.service';
+import { AuthMiddleware } from './common/auth.middleware';
 
 export class App {
 	app: Express;
@@ -17,6 +19,7 @@ export class App {
 
 	constructor(
 		@inject(TYPES.LoggerService) private logger: LoggerService,
+		@inject(TYPES.ConfigService) private configService: ConfigService,
 		@inject(TYPES.UserController) private userController: UserController,
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: ExceptionFilter,
 		@inject(TYPES.PrismaService) private readonly prismaService: PrismaService,
@@ -27,6 +30,8 @@ export class App {
 
 	useMiddlewares(): void {
 		this.app.use(json());
+		const authMiddleware = new AuthMiddleware(this.configService.get('SECRET'));
+		this.app.use(authMiddleware.execute.bind(authMiddleware));
 	}
 
 	useRoutes(): void {
