@@ -32,7 +32,7 @@ beforeAll(() => {
 });
 
 describe('User Service', () => {
-	it('CreateUser', async () => {
+	it('createUser', async () => {
 		configService.get = jest.fn().mockReturnValueOnce('1');
 		userRepository.create = jest.fn().mockImplementationOnce(
 			(user: User): UserModel => ({
