@@ -37,4 +37,8 @@ export class DefaultUserService implements UserService {
 
 		return newUser.comparePassword(password);
 	}
+
+	findUser(email: string): Promise<UserModel | null> {
+		return this.userRepository.find(email);
+	}
 }
