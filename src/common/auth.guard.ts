@@ -4,7 +4,7 @@ import { Middleware } from './middleware';
 export class AuthGuard implements Middleware {
 	execute({ user }: Request, res: Response, next: NextFunction): void {
 		if (!user) {
-			res.status(401).send(new Error('Unauthorized.'));
+			res.status(401).send({ error: 'Unathorized - You are not authenticated' });
 			return;
 		}
 		next();
