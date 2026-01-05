@@ -72,8 +72,8 @@ export class DefaultUserController extends DefaultController implements UserCont
 	}
 
 	async info({ user: email }: Request, res: Response, next: NextFunction): Promise<void> {
-		const user = (await this.userService.findUser(email)) as { id: number };
-		this.ok(res, { email, id: user?.id });
+		const user = await this.userService.findUser(email);
+		this.ok(res, { email: user?.email, id: user?.id });
 	}
 
 	private signJWT(email: string, secret: string): Promise<string> {
