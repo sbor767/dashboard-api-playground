@@ -12,7 +12,7 @@ import { UserRegisterDto } from './dto/user-register.dto';
 import { HTTPError } from '../error/http-error.class';
 import { DefaultController } from '../common/default.controller';
 import { ValidateMiddleware } from '../common/validate.middleware';
-import { GuardMiddleware } from '../common/guard.middleware';
+import { AuthGuard } from '../common/auth.guard';
 
 @injectable()
 export class DefaultUserController extends DefaultController implements UserController {
@@ -40,7 +40,7 @@ export class DefaultUserController extends DefaultController implements UserCont
 				path: '/info',
 				func: this.info,
 				method: 'get',
-				middlewares: [new GuardMiddleware()],
+				middlewares: [new AuthGuard()],
 			},
 		]);
 	}
