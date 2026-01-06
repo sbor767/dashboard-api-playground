@@ -1,6 +1,6 @@
 {
   "name": "dashboard-api",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Dashboard API playground",
   "main": "index.js",
   "type": "commonjs",
@@ -16,7 +16,16 @@
     "test:e2e": "jest --config jest.e2e.config.ts --coverage"
   },
   "author": "Aleksandr Borkov",
-  "license": "ISC",
+  "license": "MIT",
+  "homepage": "https://github.com/sbor767/dashboard-api-playground#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbor767/dashboard-api-playground.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sbor767/dashboard-api-playground/issues",
+    "email": "sbor767@gmail.com"
+  },
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "bcryptjs": "^2.4.3",
