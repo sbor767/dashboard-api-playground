@@ -3,6 +3,10 @@ import { boot } from '../src/main';
 import request from 'supertest';
 
 let application: App;
+const TEST_EMAIL = `foo@bar.com`;
+const CORRECT_PASSWORD = `FooBar`;
+const INCORRECT_PASSWORD = 'incorrect_password';
+let jwt: string;
 
 beforeAll(async () => {
 	const { app } = await boot;
@@ -11,14 +15,45 @@ beforeAll(async () => {
 
 describe('Users e2e', () => {
 	it('Register - error', async () => {
-		const res = await request(application.app).post('/users/register').send({
-			email: `foo${Math.floor(Date.now() / 1000)}@bar.com`,
-			password: 'FooBar',
+		const { statusCode } = await request(application.app).post('/users/register').send({
+			email: TEST_EMAIL,
+			password: CORRECT_PASSWORD,
 		});
-		expect(res.statusCode).toBe(422);
+		expect(statusCode).toBe(422);
+	});
+
+	it('Login - success', async () => {
+		const { body, statusCode } = await request(application.app).post('/users/login').send({
+			email: TEST_EMAIL,
+			password: CORRECT_PASSWORD,
+		});
+		jwt = body?.jwt;
+		expect(statusCode).toBe(200);
+	});
+
+	it('Login - unsuccess', async () => {
+		const { statusCode } = await request(application.app).post('/users/login').send({
+			email: TEST_EMAIL,
+			password: INCORRECT_PASSWORD,
+		});
+		expect(statusCode).toBe(401);
+	});
+
+	it('Get info - success', async () => {
+		const { body, statusCode } = await request(application.app)
+			.get('/users/info')
+			.set('Authorization', `Bearer ${jwt}`);
+		expect(statusCode).toBe(200);
+	});
+
+	it('Get info - unsuccess', async () => {
+		const { body, statusCode } = await request(application.app)
+			.get('/users/info')
+			.set('Authorization', `Bearer 1${jwt}`);
+		expect(statusCode).toBe(401);
 	});
 });
 
-afterAll(()=>{
-	application.close()
-})
+afterAll(() => {
+	application.close();
+});
