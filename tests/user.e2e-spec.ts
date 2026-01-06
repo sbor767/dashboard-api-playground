@@ -6,7 +6,6 @@ let application: App;
 const TEST_EMAIL = `foo@bar.com`;
 const CORRECT_PASSWORD = `FooBar`;
 const INCORRECT_PASSWORD = 'incorrect_password';
-let jwt: string;
 
 beforeAll(async () => {
 	const { app } = await boot;
@@ -27,11 +26,11 @@ describe('Users e2e', () => {
 			email: TEST_EMAIL,
 			password: CORRECT_PASSWORD,
 		});
-		jwt = body?.jwt;
 		expect(statusCode).toBe(200);
+		expect(body?.jwt).not.toBeUndefined;
 	});
 
-	it('Login - unsuccess', async () => {
+	it('Login - error', async () => {
 		const { statusCode } = await request(application.app).post('/users/login').send({
 			email: TEST_EMAIL,
 			password: INCORRECT_PASSWORD,
@@ -40,16 +39,23 @@ describe('Users e2e', () => {
 	});
 
 	it('Get info - success', async () => {
+		const {
+			body: { jwt },
+		} = await request(application.app).post('/users/login').send({
+			email: TEST_EMAIL,
+			password: CORRECT_PASSWORD,
+		});
 		const { body, statusCode } = await request(application.app)
 			.get('/users/info')
 			.set('Authorization', `Bearer ${jwt}`);
 		expect(statusCode).toBe(200);
+		expect(body?.email).toBe(TEST_EMAIL);
 	});
 
-	it('Get info - unsuccess', async () => {
+	it('Get info - error', async () => {
 		const { body, statusCode } = await request(application.app)
 			.get('/users/info')
-			.set('Authorization', `Bearer 1${jwt}`);
+			.set('Authorization', `Bearer SomeWrongString`);
 		expect(statusCode).toBe(401);
 	});
 });
