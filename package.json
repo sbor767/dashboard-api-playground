@@ -1,7 +1,7 @@
 {
   "name": "dashboard-api",
   "version": "0.1.0",
-  "description": "Dashboard API playground",
+  "description": "Educational REST API playground built with Node.js, TypeScript, and Express. Demonstrates dependency injection patterns, interface-based architecture, and multi-layer design with Inversify IoC container. Features JWT authentication, Prisma ORM, and comprehensive test coverage.",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
