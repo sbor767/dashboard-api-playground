@@ -52,6 +52,7 @@ export class App {
 	}
 
 	public close(): void {
+		void this.prismaService.disconnect();
 		this.server.close();
 	}
 }
