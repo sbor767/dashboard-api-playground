@@ -361,14 +361,6 @@ error - errors
 
 Configure log level with `LOG_LEVEL` variable in `.env`
 
-## License
-
-MIT License
-
-## Author
-
-Aleksandr Borkov
-
 ## Migration & Updates
 
 ### v2.0 - Modern Stack (January 2026)
@@ -393,6 +385,14 @@ Aleksandr Borkov
 3. Update `.env` file with new DATABASE_URL path
 4. Run `npm run generate` to regenerate Prisma client
 5. All tests should pass: `npm run test:e2e`
+
+## License
+
+MIT License
+
+## Author
+
+Aleksandr Borkov
 
 ## Resources
 
