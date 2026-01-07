@@ -20,18 +20,32 @@ The primary goal is to demonstrate:
 
 - Authentication and authorization with JWT tokens
 - User management (registration, login)
-- Prisma ORM for database interaction (SQLite/PostgreSQL)
+- Prisma ORM v7 with LibSQL adapter for database interaction
 - Three-layer architecture (controllers, services, repositories)
 - Data validation using class-validator
 - Logging with TSLog
-- Unit and e2e test coverage
+- Unit and e2e test coverage with 89% coverage
 - Dependency injection with Inversify
+- Modern TypeScript 5.3 execution with tsx
+
+### Technology Stack
+
+- **Runtime:** Node.js v20.19.0+
+- **Language:** TypeScript 5.3.3
+- **Dev Runtime:** tsx (fast TypeScript executor)
+- **Web Framework:** Express v5.2.1
+- **ORM:** Prisma v7.2.0 with LibSQL adapter
+- **Testing:** Jest v29.7.0 with ts-jest
+- **DI Container:** Inversify v6.2.2
+- **Authentication:** JWT (jsonwebtoken)
+- **Validation:** class-validator, class-transformer
+- **Logging:** tslog v3.3.4
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 16+
+- Node.js 20.19.0+
 - npm or yarn
 - SQLite (default) or PostgreSQL
 
@@ -56,7 +70,7 @@ LOG_LEVEL=debug
 BCRYPT_ROUNDS=10
 SECRET=your-secret-key-here
 
-DATABASE_URL=file:./dev.db
+DATABASE_URL=file:./prisma/dev.db
 ```
 
 4. Generate Prisma client:
@@ -68,6 +82,8 @@ npm run generate
 ```bash
 npm run dev
 ```
+
+**Note:** The project uses `tsx` for development execution (faster than ts-node). VSCode debugging and nodemon are pre-configured.
 
 Server runs at `http://localhost:8000`
 
@@ -219,7 +235,7 @@ container.bind<UserController>(TYPES.UserController).to(DefaultUserController);
 
 ## Database
 
-The project uses Prisma as ORM. Current schema includes the `UserModel`:
+The project uses Prisma ORM v7 with LibSQL adapter for SQLite support. Current schema includes the `UserModel`:
 
 ```prisma
 model UserModel {
@@ -228,6 +244,35 @@ model UserModel {
   password String
   name     String
 }
+```
+
+### Prisma Configuration
+
+Prisma v7 uses `prisma.config.ts` for CLI configuration:
+
+```typescript
+import { defineConfig } from 'prisma'
+
+export default defineConfig({
+  schema: './prisma/schema.prisma',
+  migrations: './prisma/migrations',
+  datasource: {
+    url: process.env.DATABASE_URL ?? 'file:./prisma/dev.db',
+  },
+})
+```
+
+At runtime, PrismaClient is initialized with LibSQL adapter:
+
+```typescript
+import { PrismaClient } from '@prisma/client'
+import { PrismaLibSql } from '@prisma/adapter-libsql'
+
+const adapter = new PrismaLibSql({
+  url: process.env.DATABASE_URL ?? 'file:./prisma/dev.db',
+})
+
+const prisma = new PrismaClient({ adapter })
 ```
 
 ### Migrations
@@ -295,8 +340,10 @@ Configuration files:
 - tslog - logging
 
 ### Development:
-- TypeScript - type safety
-- Jest - testing framework
+- TypeScript 5.3.3 - type safety
+- tsx - fast TypeScript executor (replaces ts-node)
+- Jest 29.7.0 - testing framework
+- ts-jest 29.1.1 - TypeScript support for Jest
 - ESLint - code analysis
 - Prettier - code formatting
 - nodemon - development auto-reload
@@ -322,10 +369,37 @@ MIT License
 
 Aleksandr Borkov
 
+## Migration & Updates
+
+### v2.0 - Modern Stack (January 2026)
+
+**Major Updates:**
+- Upgraded to Node.js v20.19.0 (from v16)
+- Upgraded TypeScript to 5.3.3
+- Migrated from ts-node to tsx for faster development
+- Upgraded Prisma to v7.2.0 with LibSQL adapter
+- Upgraded Jest to v29.7.0
+- Upgraded Express to v5.2.1
+- Maintained 89% test coverage throughout migration
+
+**Breaking Changes:**
+- Requires Node.js 20.19.0+
+- Prisma v7 requires adapter pattern for SQLite (see Database section)
+- DATABASE_URL path changed to `file:./prisma/dev.db`
+
+**Migration Steps from v1:**
+1. Update Node.js to v20.19.0+
+2. Run `npm install` to update all dependencies
+3. Update `.env` file with new DATABASE_URL path
+4. Run `npm run generate` to regenerate Prisma client
+5. All tests should pass: `npm run test:e2e`
+
 ## Resources
 
 - [Express.js](https://expressjs.com/)
-- [Prisma](https://www.prisma.io/docs/)
+- [Prisma v7 Docs](https://www.prisma.io/docs/)
+- [Prisma LibSQL Adapter](https://www.prisma.io/docs/orm/overview/databases/libsql)
 - [TypeScript](https://www.typescriptlang.org/docs/)
+- [tsx](https://github.com/privatenumber/tsx)
 - [Inversify](https://inversify.io/)
 - [JWT](https://jwt.io/)
